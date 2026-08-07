@@ -42,5 +42,73 @@
 // =============================================================================
 // YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
 // =============================================================================
+const readlineSync = require('readline-sync');
+
+
+function calculateSum(arr) {
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+        sum += arr[i];
+    }
+    return sum;
+}
+
+
+function calculateAverage(arr) {
+    if (arr.length === 0) return 0;
+    return calculateSum(arr) / arr.length;
+}
+
+
+function findMaximum(arr) {
+    let maxVal = arr[0];
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] > maxVal) {
+            maxVal = arr[i];
+        }
+    }
+    return maxVal;
+}
+
+
+function findMinimum(arr) {
+    let minVal = arr[0];
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] < minVal) {
+            minVal = arr[i];
+        }
+    }
+    return minVal;
+}
+
+
+function main() {
+   
+    const n = readlineSync.questionInt('How many numbers? ');
+
+    
+    if (n <= 0) {
+        console.log('Error: Number of elements must be positive.');
+        return;
+    }
+
+    
+    const numbers = [];
+    for (let i = 0; i < n; i++) {
+        const num = readlineSync.questionFloat(`Enter number ${i + 1}: `);
+        numbers.push(num);
+    }
+
+    
+    console.log('\nResults:');
+    console.log(`Sum:     ${calculateSum(numbers)}`);
+    console.log(`Average: ${calculateAverage(numbers)}`);
+    console.log(`Maximum: ${findMaximum(numbers)}`);
+    console.log(`Minimum: ${findMinimum(numbers)}`);
+}
+
+
+main();
+
 
 
