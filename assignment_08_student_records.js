@@ -83,5 +83,109 @@
 // =============================================================================
 // YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
 // =============================================================================
+const readlineSync = require('readline-sync');
 
+
+function calculateAverage(scores) {
+    if (!scores || scores.length === 0) return 0;
+    const sum = scores.reduce((acc, curr) => acc + curr, 0);
+    return sum / scores.length;
+}
+
+
+function showMenu() {
+    console.log('\n================================');
+    console.log('   STUDENT RECORD SYSTEM MENU   ');
+    console.log('================================');
+    console.log('1. Add student');
+    console.log('2. Display all students');
+    console.log('3. Calculate average score');
+    console.log('4. Quit');
+}
+
+
+function addStudent(students) {
+    const name = readlineSync.question('Student name: ');
+    const id = readlineSync.questionInt('Student ID: ');
+    const numScores = readlineSync.questionInt('How many scores? ');
+
+    const scores = [];
+    for (let i = 0; i < numScores; i++) {
+        const score = readlineSync.questionFloat(`Enter score ${i + 1}: `);
+        scores.push(score);
+    }
+
+    
+    students.push({ name, id, scores });
+    console.log(`Student "${name}" added successfully.`);
+}
+
+
+function displayAllStudents(students) {
+    if (students.length === 0) {
+        console.log('\nNo student records available.');
+        return;
+    }
+
+    console.log('\n----------------------------------------------------------------------');
+    console.log('ID\t\tName\t\t\tScores\t\tAverage');
+    console.log('----------------------------------------------------------------------');
+
+    for (const student of students) {
+        const avg = calculateAverage(student.scores);
+        const scoresStr = student.scores.join(', ');
+        console.log(`${student.id}\t${student.name}\t\t[${scoresStr}]\t\t${avg.toFixed(2)}`);
+    }
+    console.log('----------------------------------------------------------------------');
+}
+
+
+function calculateAverageScoreByID(students) {
+    if (students.length === 0) {
+        console.log('\nNo student records available.');
+        return;
+    }
+
+    const searchID = readlineSync.questionInt('Enter student ID: ');
+    const student = students.find(s => s.id === searchID);
+
+    if (student) {
+        const avg = calculateAverage(student.scores);
+        console.log(`${student.name}'s average score: ${avg.toFixed(2)}`);
+    } else {
+        console.log(`Error: Student ID ${searchID} not found.`);
+    }
+}
+
+
+function main() {
+    const students = [];
+    let choice = 0;
+
+    while (choice !== 4) {
+        showMenu();
+        choice = readlineSync.questionInt('Enter your choice (1-4): ');
+
+        switch (choice) {
+            case 1:
+                addStudent(students);
+                break;
+            case 2:
+                displayAllStudents(students);
+                break;
+            case 3:
+                calculateAverageScoreByID(students);
+                break;
+            case 4:
+                console.log('Goodbye!');
+                break;
+            default:
+                console.log('Invalid choice! Please select a valid menu option (1-4).');
+                break;
+        }
+    }
+}
+
+
+main();
 
